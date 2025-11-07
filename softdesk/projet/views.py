@@ -1,16 +1,17 @@
-from django.shortcuts import render
 from rest_framework import viewsets
 from .models import User
 from .serializers import UserSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
+# ViewSet pour gérer les utilisateurs
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+    queryset = User.objects.all()  # Tous les utilisateurs
+    serializer_class = UserSerializer  # Serializer défini ci-dessus
 
+    # Gestion des permissions selon l'action (création ouverte à tous, autre requête nécessite authentification)
     def get_permissions(self):
         if self.action == 'create':
-            permission_classes = [AllowAny]
+            permission_classes = [AllowAny]  # Création sans authentification obligatoire
         else:
-            permission_classes = [IsAuthenticated]
+            permission_classes = [IsAuthenticated]  # Autres actions nécessitent une authentification
         return [permission() for permission in permission_classes]
