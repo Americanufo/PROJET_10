@@ -15,7 +15,6 @@ class ContributorNestedSerializer(serializers.ModelSerializer):
         # Affiche id, et username de l'utilisateur
         fields = ['id', 'user']
 
-
 class ProjectSerializer(serializers.ModelSerializer):
     # Affiche username de l'auteur, lecture seule
     author = serializers.ReadOnlyField(source='author.username')
@@ -26,7 +25,6 @@ class ProjectSerializer(serializers.ModelSerializer):
         model = Project
         # Champs exposés via l’API
         fields = ['id', 'title', 'description', 'type', 'author', 'contributors', 'created_at', 'updated_at']
-
 
 class ContributorSerializer(serializers.ModelSerializer):
     # Champ user pour lecture : affiche le nom d'utilisateur de l'utilisateur lié
@@ -46,21 +44,6 @@ class ContributorSerializer(serializers.ModelSerializer):
         # On expose : id, user en lecture (username), user_id en écriture (clé primaire), projet, titre projet, date création
         fields = ['id', 'user', 'user_id', 'project', 'project_title', 'created_at']
 
-
-class IssueSerializer(serializers.ModelSerializer):
-    # Affiche le nom d'utilisateur de l’auteur
-    author = serializers.ReadOnlyField(source='author.username')
-    # Affiche l’utilisateur assigné (contributeur) en lecture seulement avec username
-    assigned_to = serializers.StringRelatedField()  # Affiche __str__ de Contributor (à adapter si besoin)
-
-    class Meta:
-        model = Issue
-        fields = [
-            'id', 'title', 'description', 'priority', 'tag', 'status',
-            'project', 'assigned_to', 'author', 'created_at'
-        ]
-
-
 class CommentSerializer(serializers.ModelSerializer):
     # Affiche le nom d’utilisateur de l’auteur du commentaire
     author = serializers.ReadOnlyField(source='author.username')
@@ -68,3 +51,18 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ['id', 'description', 'created_at', 'author', 'issue']
+
+class IssueSerializer(serializers.ModelSerializer):
+    # Affiche le nom d'utilisateur de l’auteur
+    author = serializers.ReadOnlyField(source='author.username')
+    # Affiche l’utilisateur assigné (contributeur) en lecture seulement avec username
+    assigned_to = serializers.StringRelatedField()  # Affiche __str__ de Contributor (à adapter si besoin)
+    # Ajout d’une liste des commentaires liés à cette issue, lecture seule et imbriquée
+    comments = CommentSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Issue
+        fields = [
+            'id', 'title', 'description', 'priority', 'tag', 'status',
+            'project', 'assigned_to', 'author', 'created_at', 'comments'
+        ]

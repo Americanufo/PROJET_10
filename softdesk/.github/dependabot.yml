@@ -1,0 +1,12 @@
+version: 2
+updates:
+  - package-ecosystem: "pipenv"      # Gestionnaire Pipenv (Pipfile)
+    directory: "/"                   # Racine du dépôt où est Pipfile et Pipfile.lock
+    schedule:
+      interval: "weekly"             # Fréquence des vérifications (daily, weekly, monthly)
+    open-pull-requests-limit: 5      # Max PR ouvertes de mises à jour simultanées
+    # Optionnel : ignore certaines dépendances
+    # ignore:
+    #   - dependency-name: "django"
+    #     versions:
+    #       - "2.x"
