@@ -15,16 +15,25 @@ class ContributorNestedSerializer(serializers.ModelSerializer):
         # Affiche id, et username de l'utilisateur
         fields = ['id', 'user']
 
+class IssueNestedSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Issue
+        # Affiche id, le titre, la description, la priorité et l'autheur
+        fields = ['id', 'title', 'description', 'priority' , 'author', 'tag', 'status']
+
 class ProjectSerializer(serializers.ModelSerializer):
     # Affiche username de l'auteur, lecture seule
     author = serializers.ReadOnlyField(source='author.username')
     # Liste imbriquée des contributeurs (avec username), lecture seule (pas modifiable ici)
     contributors = ContributorNestedSerializer(many=True, read_only=True)
+    # Liste des issues
+    issues = IssueNestedSerializer(many=True, read_only=True)
 
     class Meta:
         model = Project
         # Champs exposés via l’API
-        fields = ['id', 'title', 'description', 'type', 'author', 'contributors', 'created_at', 'updated_at']
+        fields = ['id', 'title', 'description', 'type', 'author', 'contributors', 'created_at', 'updated_at', 'issues']
 
 class ContributorSerializer(serializers.ModelSerializer):
     # Champ user pour lecture : affiche le nom d'utilisateur de l'utilisateur lié

@@ -7,6 +7,7 @@ from .serializers import ProjectSerializer, ContributorSerializer
 from .models import Issue, Comment
 from .serializers import IssueSerializer, CommentSerializer
 
+
 class ProjectViewSet(viewsets.ModelViewSet):
     serializer_class = ProjectSerializer
     permission_classes = [IsAuthenticated]
@@ -16,7 +17,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         user = self.request.user
         return Project.objects.filter(
             Q(author=user) | Q(contributors__user=user)
-        ).distinct()
+        ).distinct().select_related('author').prefetch_related('contributors')
 
     def perform_create(self, serializer):
         # Création projet avec auteur attaché
@@ -46,7 +47,7 @@ class ContributorViewSet(viewsets.ModelViewSet):
         user = self.request.user
         return Contributor.objects.filter(
             project__author=user
-        ).distinct()
+        ).distinct().select_related('user', 'project')
 
     def perform_create(self, serializer):
         user = self.request.user
@@ -84,9 +85,10 @@ class IssueViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         # L’utilisateur accède aux issues des projets où il est contributeur ou auteur
+        # Optimisation des relations afin d’éviter des requêtes inutiles (select_related et prefetch_related)
         return Issue.objects.filter(
             Q(project__author=user) | Q(project__contributors__user=user)
-        ).distinct()
+        ).distinct().select_related('author', 'assigned_to', 'project').prefetch_related('comments')
 
     def perform_create(self, serializer):
         user = self.request.user
@@ -124,7 +126,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         # L’utilisateur a accès aux commentaires des issues des projets où il est contributeur ou auteur
         return Comment.objects.filter(
             Q(issue__project__author=user) | Q(issue__project__contributors__user=user)
-        ).distinct()
+        ).distinct().select_related('author', 'issue')
 
     def perform_create(self, serializer):
         # L’auteur du commentaire est user connecté
