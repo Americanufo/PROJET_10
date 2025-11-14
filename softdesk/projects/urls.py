@@ -11,5 +11,5 @@ router.register('issues', IssueViewSet, basename='issue')
 router.register('comments', CommentViewSet, basename='comment')
 
 urlpatterns = [
-    path('', include(router.urls)), # inclut les routes automatiques générées par DRF router
+    path('', include(router.urls)),  # inclut les routes automatiques générées par DRF router
 ]

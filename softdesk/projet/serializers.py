@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import User
 
+
 # Serializer pour le modèle User
 class UserSerializer(serializers.ModelSerializer):
     # Champ mot de passe en écriture seule pour sécurité

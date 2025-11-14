@@ -6,6 +6,7 @@ from .models import Issue, Comment
 # Récupère dynamiquement le modèle utilisateur personnalisé de ton projet
 User = get_user_model()
 
+
 class ContributorNestedSerializer(serializers.ModelSerializer):
     # Affiche username lié au contributeur
     user = serializers.ReadOnlyField(source='user.username')
@@ -15,12 +16,14 @@ class ContributorNestedSerializer(serializers.ModelSerializer):
         # Affiche id, et username de l'utilisateur
         fields = ['id', 'user']
 
+
 class IssueNestedSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Issue
         # Affiche id, le titre, la description, la priorité et l'autheur
-        fields = ['id', 'title', 'description', 'priority' , 'author', 'tag', 'status']
+        fields = ['id', 'title', 'description', 'priority', 'author', 'tag', 'status']
+
 
 class ProjectSerializer(serializers.ModelSerializer):
     # Affiche username de l'auteur, lecture seule
@@ -34,6 +37,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         model = Project
         # Champs exposés via l’API
         fields = ['id', 'title', 'description', 'type', 'author', 'contributors', 'created_at', 'updated_at', 'issues']
+
 
 class ContributorSerializer(serializers.ModelSerializer):
     # Champ user pour lecture : affiche le nom d'utilisateur de l'utilisateur lié
@@ -53,13 +57,16 @@ class ContributorSerializer(serializers.ModelSerializer):
         # On expose : id, user en lecture (username), user_id en écriture (clé primaire), projet, titre projet, date création
         fields = ['id', 'user', 'user_id', 'project', 'project_title', 'created_at']
 
+
 class CommentSerializer(serializers.ModelSerializer):
     # Affiche le nom d’utilisateur de l’auteur du commentaire
     author = serializers.ReadOnlyField(source='author.username')
     # Doit contenir description et être lié à une issue et auteur
+
     class Meta:
         model = Comment
         fields = ['id', 'description', 'created_at', 'author', 'issue']
+
 
 class IssueSerializer(serializers.ModelSerializer):
     # Affiche le nom d'utilisateur de l’auteur

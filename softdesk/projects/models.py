@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 import uuid
 
+
 class Project(models.Model):
     # Choix possibles pour le type de projet
     TYPE_CHOICES = [

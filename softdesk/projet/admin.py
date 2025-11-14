@@ -2,11 +2,12 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import User
 
+
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
     # Champs à afficher dans la liste admin
     list_display = ('username', 'email', 'age', 'is_staff', 'is_superuser', 'is_active')
-    
+
     # Champs dans le formulaire d’édition
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
@@ -14,7 +15,7 @@ class UserAdmin(BaseUserAdmin):
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('Dates importantes', {'fields': ('last_login', 'date_joined')}),
     )
-    
+
     # Champs pour créer un utilisateur dans l’admin
     add_fieldsets = (
         (None, {
