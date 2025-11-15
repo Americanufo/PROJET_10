@@ -18,7 +18,6 @@ Gestion collaborative de projets, tickets et commentaires
 - Endpoints API principaux
 - Mises à jour automatiques (Dependabot)
 - Conseils pour les tests
-- Licence
 
 ---
 
@@ -215,4 +214,4 @@ _Note : tous les endpoints nécessitent une authentification JWT._
 
 - Utilisez Postman ou tout autre client REST pour tester l’ensemble des endpoints.
 - Vérifiez les réponses pour différents rôles (auteur, contributeur, utilisateur non connecté) afin de garantir la robustesse des contrôles d’accès.
-- N’hésitez pas à consulter le code source ou les scripts d’exemple pour manipuler l’API.
+- N’hésitez pas à consulter le code source pour manipuler l’API.
