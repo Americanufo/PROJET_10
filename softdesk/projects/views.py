@@ -54,7 +54,7 @@ class ContributorViewSet(viewsets.ModelViewSet):
         project = serializer.validated_data['project']
         chosen_user = serializer.validated_data['user']  # utilisateur choisi pour être contributeur
 
-        # Contrôle strict : seul auteur peut ajouter un contributeur au projet
+        # Contrôle strict : seul l'auteur peut ajouter un contributeur au projet
         if project.author != user:
             raise PermissionDenied("Seul l'auteur peut ajouter un contributeur à ce projet.")
 
@@ -66,13 +66,13 @@ class ContributorViewSet(viewsets.ModelViewSet):
         serializer.save()
 
     def perform_update(self, serializer):
-        # Seul auteur du projet peut modifier un contributeur
+        # Seul l'auteur du projet peut modifier un contributeur
         if serializer.instance.project.author != self.request.user:
             raise PermissionDenied("Seul l'auteur peut modifier ce contributeur.")
         serializer.save()
 
     def perform_destroy(self, instance):
-        # Seul auteur du projet peut supprimer un contributeur
+        # Seul l'auteur du projet peut supprimer un contributeur
         if instance.project.author != self.request.user:
             raise PermissionDenied("Seul l'auteur peut supprimer ce contributeur.")
         instance.delete()
@@ -111,7 +111,7 @@ class IssueViewSet(viewsets.ModelViewSet):
         serializer.save()
 
     def perform_destroy(self, instance):
-        # Seul auteur de l’issue peut supprimer
+        # Seul l'auteur de l’issue peut supprimer
         if instance.author != self.request.user:
             raise PermissionDenied("Seul l'auteur peut supprimer cette issue.")
         instance.delete()
@@ -133,13 +133,13 @@ class CommentViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
     def perform_update(self, serializer):
-        # Seul auteur du commentaire peut modifier
+        # Seul l'auteur du commentaire peut modifier
         if serializer.instance.author != self.request.user:
             raise PermissionDenied("Seul l'auteur peut modifier ce commentaire.")
         serializer.save()
 
     def perform_destroy(self, instance):
-        # Seul auteur du commentaire peut supprimer
+        # Seul l'auteur du commentaire peut supprimer
         if instance.author != self.request.user:
             raise PermissionDenied("Seul l'auteur peut supprimer ce commentaire.")
         instance.delete()

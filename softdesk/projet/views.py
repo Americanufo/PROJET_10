@@ -12,7 +12,7 @@ class UserPagination(LimitOffsetPagination):
 # ViewSet pour gérer les utilisateurs
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()  # Tous les utilisateurs
-    serializer_class = UserSerializer  # Serializer défini ci-dessus
+    serializer_class = UserSerializer  # Serializer user
     pagination_class = UserPagination    # Pagination 10 par page
 
     # Gestion des permissions selon l'action (création ouverte à tous, autre requête nécessite authentification)

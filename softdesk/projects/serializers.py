@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import Project, Contributor
 from .models import Issue, Comment
 
-# Récupère dynamiquement le modèle utilisateur personnalisé de ton projet
+# Récupère dynamiquement le modèle utilisateur personnalisé
 User = get_user_model()
 
 
@@ -28,7 +28,7 @@ class IssueNestedSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     # Affiche username de l'auteur, lecture seule
     author = serializers.ReadOnlyField(source='author.username')
-    # Liste imbriquée des contributeurs (avec username), lecture seule (pas modifiable ici)
+    # Liste imbriquée des contributeurs, lecture seule
     contributors = ContributorNestedSerializer(many=True, read_only=True)
     # Liste des issues
     issues = IssueNestedSerializer(many=True, read_only=True)
@@ -72,7 +72,7 @@ class IssueSerializer(serializers.ModelSerializer):
     # Affiche le nom d'utilisateur de l’auteur
     author = serializers.ReadOnlyField(source='author.username')
     # Affiche l’utilisateur assigné (contributeur) en lecture seulement avec username
-    assigned_to = serializers.StringRelatedField()  # Affiche __str__ de Contributor (à adapter si besoin)
+    assigned_to = serializers.StringRelatedField()
     # Ajout d’une liste des commentaires liés à cette issue, lecture seule et imbriquée
     comments = CommentSerializer(many=True, read_only=True)
 
